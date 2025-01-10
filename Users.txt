@@ -1,0 +1,5 @@
+USER_ID-USERNAME-PASSWORD_HASH-USER_TYPE-EMAIL-NAME-STATUS
+CUST001,customer1,b041c0aeb35bb0fa4aa668ca5a920b590196fdaf9a00eb852c9b7f4d123cc6d6,customer,ashraf@messi.com,Ashraf Messi,Active
+STF001,staff1,10176e7b7b24d317acfcf8d2064cfd2f24e154f7b5a96603077d5ef813d6a6b6,staff,mahmoud@smith.com,Mahmoud Smith,Active
+MGR001,manager1,866485796cfa8d7c0cf7111640205b83076433547577511d81f8030ae99ecea5,manager,karim@alice.com,Karim Alice,Active
+ADM001,admin1,240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9,admin,ahmed@brown.com,Ahmed Brown,Active

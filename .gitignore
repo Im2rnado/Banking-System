@@ -1,0 +1,41 @@
+# NetBeans specific
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+# Class files
+*.class
+
+# Package files
+*.jar
+*.war
+*.ear
+*.mf
+
+# Maven
+target/
+
+# Logs
+*.log
+
+# IDE files
+.idea/
+*.iml
+.settings/
+.project
+.classpath
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Compiled files
+out/
+build.xml
+
+# Dependencies
+lib/
