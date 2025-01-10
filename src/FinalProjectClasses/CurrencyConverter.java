@@ -45,14 +45,19 @@ public class CurrencyConverter {
         }
     }
 
-    public double convert(double amount, String targetCurrency) {
+    public double convert(double amount, String sourceCurrency, String targetCurrency) {
+        if (!exchangeRates.containsKey(sourceCurrency)) {
+            System.out.println("Invalid source currency code.");
+            return -1; // Indicating error
+        }
         if (!exchangeRates.containsKey(targetCurrency)) {
             System.out.println("Invalid target currency code.");
             return -1; // Indicating error
         }
-        double rate = exchangeRates.get(targetCurrency);
-        double convertedAmount = amount * rate;
-        System.out.printf("Converted %.2f %s to %.2f %s%n", amount, baseCurrency, convertedAmount, targetCurrency);
+        double sourceRate = exchangeRates.get(sourceCurrency);
+        double targetRate = exchangeRates.get(targetCurrency);
+        double convertedAmount = amount * (targetRate / sourceRate);
+        System.out.printf("Converted %.2f %s to %.2f %s%n", amount, sourceCurrency, convertedAmount, targetCurrency);
         return convertedAmount;
     }
 

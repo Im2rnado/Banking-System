@@ -33,7 +33,7 @@ A comprehensive Java-based banking management system with GUI interface.
   - Managers
 - Profile management
 - Authentication and authorization
-- Status tracking (active/inactive)
+- Status tracking (active/blocked)
 
 ### Additional Features
 - Interest rate calculations

@@ -5,10 +5,10 @@
 package FinalProjectGUI;
 
 import FinalProjectClasses.*;
+import java.util.List;
+import java.util.UUID;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import java.util.UUID;
-import java.util.List;
 
 public class User_Management_Page extends javax.swing.JFrame {
 
@@ -131,13 +131,13 @@ public class User_Management_Page extends javax.swing.JFrame {
 
         userTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Name", "Email", "Role"
+                "ID", "Username", "Name", "Email", "Role"
             }
         ));
         userPane.setViewportView(userTable);

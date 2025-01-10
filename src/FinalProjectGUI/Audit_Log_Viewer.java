@@ -88,13 +88,13 @@ public class Audit_Log_Viewer extends javax.swing.JFrame {
 
         auditLogsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Date", "User", "Action"
+                "ID", "User", "Action", "Date"
             }
         ));
         auditLogsPane.setViewportView(auditLogsTable);

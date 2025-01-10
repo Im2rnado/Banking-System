@@ -304,7 +304,7 @@ public class Customer_Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_currencyConversionButtonActionPerformed
 
     private void accountManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accountManagementButtonActionPerformed
-        Account_Management x = new Account_Management(this.customer, this.customer.getAccounts());
+        Account_Management x = new Account_Management(this.customer);
         x.setVisible(true);
         dispose();
     }//GEN-LAST:event_accountManagementButtonActionPerformed

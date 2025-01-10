@@ -276,6 +276,7 @@ public class Staff_Dashboard extends javax.swing.JFrame {
     private void accountsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accountsButtonActionPerformed
         Account_Management x = new Account_Management(this.staff);
         x.setVisible(true);
+        dispose();
     }//GEN-LAST:event_accountsButtonActionPerformed
 
     private void customerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerButtonActionPerformed

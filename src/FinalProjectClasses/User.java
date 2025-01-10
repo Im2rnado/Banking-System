@@ -16,7 +16,7 @@ public class User {
     final String role; // customer, manager, teller
     private String email;
     private String fullName;
-    private String status; // active/inactive
+    private String status; // Active/Blocked
 
     // Constructor
     public User(String userId, String username, String password, String role, String email, String fullName, String status) {

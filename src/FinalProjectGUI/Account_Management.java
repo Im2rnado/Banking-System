@@ -6,6 +6,7 @@ package FinalProjectGUI;
 
 import FinalProjectClasses.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import javax.swing.table.DefaultTableModel;
@@ -20,9 +21,9 @@ public class Account_Management extends javax.swing.JFrame {
     /**
      * Creates new form Account_Management
      */
-    public Account_Management(Customer customer, List<Account> accounts) {
+    public Account_Management(Customer customer) {
         this.customer = customer;
-        this.userAccounts = accounts;
+        this.userAccounts = customer.getAccounts();
         initComponents();
         populateAccountsTable();
         calculateTotalBalance();
@@ -62,7 +63,7 @@ public class Account_Management extends javax.swing.JFrame {
         accountsTable = new javax.swing.JTable();
         totalBalanceLabel = new javax.swing.JLabel();
         createAccountButton = new javax.swing.JButton();
-        initiateTransferButton = new javax.swing.JButton();
+        initiateDepositButton = new javax.swing.JButton();
         returnButton = new javax.swing.JButton();
         totalBalanceField = new javax.swing.JTextField();
         exitButton = new javax.swing.JButton();
@@ -130,12 +131,12 @@ public class Account_Management extends javax.swing.JFrame {
             }
         });
 
-        initiateTransferButton.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
-        initiateTransferButton.setText("Initiate Transfer");
-        initiateTransferButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        initiateTransferButton.addActionListener(new java.awt.event.ActionListener() {
+        initiateDepositButton.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        initiateDepositButton.setText("Initiate Deposit");
+        initiateDepositButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        initiateDepositButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                initiateTransferButtonActionPerformed(evt);
+                initiateDepositButtonActionPerformed(evt);
             }
         });
 
@@ -192,7 +193,7 @@ public class Account_Management extends javax.swing.JFrame {
                                                                         .addComponent(createAccountButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                 .addGap(68, 68, 68)
                                                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addComponent(initiateTransferButton, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(initiateDepositButton, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                         .addComponent(viewDetailsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -225,7 +226,7 @@ public class Account_Management extends javax.swing.JFrame {
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                 .addComponent(returnButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(initiateTransferButton, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(initiateDepositButton, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addComponent(createAccountButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap(13, Short.MAX_VALUE))
         );
@@ -280,67 +281,51 @@ public class Account_Management extends javax.swing.JFrame {
 
     }//GEN-LAST:event_createAccountButtonActionPerformed
 
-    private void initiateTransferButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_initiateTransferButtonActionPerformed
-        int selectedRow = accountsTable.getSelectedRow();
-        if (selectedRow >= 0) {
-            String accountId = accountsTable.getValueAt(selectedRow, 0).toString();
-            Account sourceAccount = userAccounts.stream()
-                    .filter(account -> account.getAccountId().equals(accountId))
-                    .findFirst()
-                    .orElse(null);
+    private void initiateDepositButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_initiateDepositButtonActionPerformed
+        String targetAccountId = javax.swing.JOptionPane.showInputDialog(this,
+                "Enter Account ID:",
+                "Initiate Deposit",
+                javax.swing.JOptionPane.QUESTION_MESSAGE);
 
-            if (sourceAccount != null) {
-                String targetAccountId = javax.swing.JOptionPane.showInputDialog(this,
-                        "Enter Target Account ID:",
-                        "Initiate Transfer",
-                        javax.swing.JOptionPane.QUESTION_MESSAGE);
+        if (targetAccountId != null && !targetAccountId.isEmpty()) {
+            String amountStr = javax.swing.JOptionPane.showInputDialog(this,
+                    "Enter Amount to Deposit:",
+                    "Initiate Deposit",
+                    javax.swing.JOptionPane.QUESTION_MESSAGE);
 
-                if (targetAccountId != null && !targetAccountId.isEmpty()) {
-                    String amountStr = javax.swing.JOptionPane.showInputDialog(this,
-                            "Enter Amount to Transfer:",
-                            "Initiate Transfer",
-                            javax.swing.JOptionPane.QUESTION_MESSAGE);
+            try {
+                String transactionId = "TR" + UUID.randomUUID().toString().toUpperCase().substring(0, 6);
+                double amount = Double.parseDouble(amountStr);
+                String type = "deposit";
+                Account targetAccount = new DatabaseManager().fetchAccountById(targetAccountId);
+                Date date = new Date();
 
-                    try {
-                        double amount = Double.parseDouble(amountStr);
-                        Account targetAccount = userAccounts.stream()
-                                .filter(account -> account.getAccountId().equals(targetAccountId))
-                                .findFirst()
-                                .orElse(null);
-                        if (sourceAccount.transferTo(targetAccount, amount)) {
-                            javax.swing.JOptionPane.showMessageDialog(this,
-                                    "Transfer Successful!",
-                                    "Success",
-                                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
-                            populateAccountsTable();
-                            calculateTotalBalance();
-                        } else {
-                            javax.swing.JOptionPane.showMessageDialog(this,
-                                    "Transfer Failed! Check funds or account validity.",
-                                    "Error",
-                                    javax.swing.JOptionPane.ERROR_MESSAGE);
-                        }
-                    } catch (NumberFormatException e) {
-                        javax.swing.JOptionPane.showMessageDialog(this,
-                                "Invalid amount entered.",
-                                "Error",
-                                javax.swing.JOptionPane.ERROR_MESSAGE);
-                    }
+                Transaction Tr = new Transaction(transactionId, type, amount, targetAccount, targetAccount, date);
+                System.out.println(Tr.getTransactionDetails());
+
+                if (Tr.processTransaction()) {
+                    javax.swing.JOptionPane.showMessageDialog(this,
+                            "Deposit Successful!",
+                            "Success",
+                            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                    userAccounts = customer.getAccounts();
+                    populateAccountsTable();
+                    calculateTotalBalance();
+                } else {
+                    javax.swing.JOptionPane.showMessageDialog(this,
+                            "Deposit Failed! Check funds or account validity.",
+                            "Error",
+                            javax.swing.JOptionPane.ERROR_MESSAGE);
                 }
-            } else {
+            } catch (NumberFormatException e) {
                 javax.swing.JOptionPane.showMessageDialog(this,
-                        "Invalid Source Account.",
+                        "Invalid amount entered.",
                         "Error",
                         javax.swing.JOptionPane.ERROR_MESSAGE);
             }
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "Please select an account to transfer from.",
-                    "No Account Selected",
-                    javax.swing.JOptionPane.WARNING_MESSAGE);
         }
 
-    }//GEN-LAST:event_initiateTransferButtonActionPerformed
+    }//GEN-LAST:event_initiateDepositButtonActionPerformed
 
     private void returnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnButtonActionPerformed
         if (customer != null) {
@@ -456,8 +441,7 @@ public class Account_Management extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 Customer customer = new Customer("null", "null", "null", "null", "null", "null", "null");
-                List<Account> accountList = new ArrayList<>();  // Fetch actual accounts from DB if needed
-                new Account_Management(customer, accountList).setVisible(true);
+                new Account_Management(customer).setVisible(true);
             }
         });
     }
@@ -466,7 +450,7 @@ public class Account_Management extends javax.swing.JFrame {
     private javax.swing.JScrollPane accountsPane;
     private javax.swing.JTable accountsTable;
     private javax.swing.JButton exitButton;
-    private javax.swing.JButton initiateTransferButton;
+    private javax.swing.JButton initiateDepositButton;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;

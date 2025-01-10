@@ -263,7 +263,7 @@ public class Currency_Conversion_Page extends javax.swing.JFrame {
                 return;
             }
 
-            double convertedAmount = currencyConverter.convert(amount, targetCurrency);
+            double convertedAmount = currencyConverter.convert(amount, sourceCurrency, targetCurrency);
             if (convertedAmount >= 0) {
                 JOptionPane.showMessageDialog(this, String.format("Converted Amount: %.2f %s", convertedAmount, targetCurrency));
             } else {
